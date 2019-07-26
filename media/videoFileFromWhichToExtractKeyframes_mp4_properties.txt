@@ -1,0 +1,2 @@
+Video: wrapped_avframe, yuv420p, 256x144 [SAR 1:1 DAR 16:9], q=2-31, 200 kb/s, 30 fps, 30 tbn, 30 tbc (default)
+ 

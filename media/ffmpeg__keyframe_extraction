@@ -1,0 +1,61 @@
+s@S-XPS-15-9560:~/dev/cpp/Pex/Sean_preemp/media$ ffmpeg -i videoFromWhichToExtractKeyframes.mp4 -vf "select=eq(pict_type\,I)" -vsync vfr videoComprisingKeyframes -hide_banner
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'test_video.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf58.19.102
+  Duration: 00:04:12.77, start: 0.000000, bitrate: 181 kb/s
+    Stream #0:0(und): Video: h264 (Main) (avc1 / 0x31637661), yuv420p(tv, bt709), 256x144 [SAR 1:1 DAR 16:9], 45 kb/s, 30 fps, 30 tbr, 15360 tbn, 60 tbc (default)
+    Metadata:
+      handler_name    : ISO Media file produced by Google Inc. Created on: 11/13/2018.
+    Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 44100 Hz, stereo, fltp, 127 kb/s (default)
+    Metadata:
+      handler_name    : ISO Media file produced by Google Inc. Created on: 11/13/2018.
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> h264 (libx264))
+  Stream #0:1 -> #0:1 (aac (native) -> aac (native))
+Press [q] to stop, [?] for help
+[libx264 @ 0x555ddcb53d00] using SAR=1/1
+[libx264 @ 0x555ddcb53d00] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2
+[libx264 @ 0x555ddcb53d00] profile High, level 1.2
+[libx264 @ 0x555ddcb53d00] 264 - core 155 r2917 0a84d98 - H.264/MPEG-4 AVC codec - Copyleft 2003-2018 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=4 lookahead_threads=1 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to 'keyframes.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf58.20.100
+    Stream #0:0(und): Video: h264 (libx264) (avc1 / 0x31637661), yuv420p, 256x144 [SAR 1:1 DAR 16:9], q=-1--1, 30 fps, 15360 tbn, 30 tbc (default)
+    Metadata:
+      handler_name    : ISO Media file produced by Google Inc. Created on: 11/13/2018.
+      encoder         : Lavc58.35.100 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: -1
+    Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 44100 Hz, stereo, fltp, 128 kb/s (default)
+    Metadata:
+      handler_name    : ISO Media file produced by Google Inc. Created on: 11/13/2018.
+      encoder         : Lavc58.35.100 aac
+frame=   77 fps= 25 q=-1.0 Lsize=    4333kB time=00:04:12.77 bitrate= 140.4kbits/s speed=81.5x    
+video:478kB audio:3809kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 1.073774%
+[libx264 @ 0x555ddcb53d00] frame I:23    Avg QP:12.30  size:  8626
+[libx264 @ 0x555ddcb53d00] frame P:49    Avg QP:15.12  size:  5335
+[libx264 @ 0x555ddcb53d00] frame B:5     Avg QP:18.15  size:  5779
+[libx264 @ 0x555ddcb53d00] consecutive B-frames: 88.3%  7.8%  3.9%  0.0%
+[libx264 @ 0x555ddcb53d00] mb I  I16..4: 25.8%  7.9% 66.2%
+[libx264 @ 0x555ddcb53d00] mb P  I16..4: 23.2% 11.6% 36.7%  P16..4: 12.8%  6.0%  5.0%  0.0%  0.0%    skip: 4.7%
+[libx264 @ 0x555ddcb53d00] mb B  I16..4:  4.4%  9.7% 35.8%  B16..8: 11.0% 17.2%  5.1%  direct:16.1%  skip: 0.7%  L0:62.6% L1:35.6% BI: 1.8%
+[libx264 @ 0x555ddcb53d00] 8x8 transform intra:13.2% inter:18.4%
+[libx264 @ 0x555ddcb53d00] coded y,uvDC,uvAC intra: 66.6% 68.5% 60.9% inter: 69.0% 77.1% 64.3%
+[libx264 @ 0x555ddcb53d00] i16 v,h,dc,p: 66% 13% 13%  9%
+[libx264 @ 0x555ddcb53d00] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 24% 26% 22%  5%  3%  3%  4%  5%  8%
+[libx264 @ 0x555ddcb53d00] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 20% 19% 14%  7%  8%  7%  8%  7%  9%
+[libx264 @ 0x555ddcb53d00] i8c dc,h,v,p: 55% 20% 15% 10%
+[libx264 @ 0x555ddcb53d00] Weighted P-Frames: Y:34.7% UV:30.6%
+[libx264 @ 0x555ddcb53d00] ref P L0: 77.6% 12.8%  8.6%  0.8%  0.2%
+[libx264 @ 0x555ddcb53d00] ref B L0: 97.1%  2.5%  0.3%
+[libx264 @ 0x555ddcb53d00] kb/s:15.63
+[aac @ 0x555ddcb4f500] Qavg: 3295.897
+s@S-XPS-15-9560:~/dev/cpp/Pex/Sean_preemp/media$ ls
+keyframes.mp4  test_video.mp4
+
