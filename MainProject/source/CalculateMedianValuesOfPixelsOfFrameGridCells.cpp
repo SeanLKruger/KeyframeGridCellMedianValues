@@ -78,34 +78,40 @@ std::vector<cv::Mat> CalculateMedianValuesOfPixelsOfFrameGridCells::SplitFrameIn
   return frameInGridOfDimensions;
 }
 
-template<typename DerivedPixelsOfFrameGridCellExtractor>
-struct PixelsOfFrameGridCellExtractor
+template<bool isContinuous = true, typename PixelT = uint8_t, class IterT = cv::MatConstIterator_<PixelT>>
+struct ExtractPixelsOfFrameGridCell_impl;
+
+template<typename PixelT, class IterT>
+struct ExtractPixelsOfFrameGridCell_impl<true, PixelT, IterT>
 {
-  std::vector<uint8_t> DoExtractPixelsOfFrameGridCell(cv::MatConstIterator_<uint8_t>& beginFrameGridCell,
-                                                      cv::MatConstIterator_<uint8_t>& endFrameGridCell)
+  std::vector<PixelT> operator()(cv::MatConstIterator_<PixelT>& beginFrameGridCell,
+                                 cv::MatConstIterator_<PixelT>& endFrameGridCell) const
   {
-    return static_cast<DerivedPixelsOfFrameGridCellExtractor*>(this)->
-      ExtractPixelsOfFrameGridCell(beginFrameGridCell, endFrameGridCell);
+    return std::vector<PixelT>(beginFrameGridCell, endFrameGridCell);
   }
 };
 
-struct PixelsOfFrameGridCellExtractorByArrayCopy : PixelsOfFrameGridCellExtractor<PixelsOfFrameGridCellExtractorByArrayCopy>
+template<typename PixelT, class IterT>
+struct ExtractPixelsOfFrameGridCell_impl<false, PixelT, IterT>
 {
-  std::vector<uint8_t> ExtractPixelsOfFrameGridCell(cv::MatConstIterator_<uint8_t>& beginFrameGridCell,
-                                                    cv::MatConstIterator_<uint8_t>& endFrameGridCell)
+  std::vector<PixelT> operator()(cv::MatConstIterator_<PixelT>& beginFrameGridCell,
+                                 cv::MatConstIterator_<PixelT>& endFrameGridCell) const
   {
-    return std::vector<uint8_t>(beginFrameGridCell, endFrameGridCell);
-  }
-};
-
-struct PixelsOfFrameGridCellExtractorByIteratorInsertion : PixelsOfFrameGridCellExtractor<PixelsOfFrameGridCellExtractorByIteratorInsertion>
-{
-  std::vector<uint8_t> ExtractPixelsOfFrameGridCell(cv::MatConstIterator_<uint8_t>& beginFrameGridCell,
-                                                    cv::MatConstIterator_<uint8_t>& endFrameGridCell)
-  {
-    std::vector<uint8_t> pixelsOfFrameGridCell;
+    std::vector<PixelT> pixelsOfFrameGridCell;
     std::copy(beginFrameGridCell, endFrameGridCell, std::back_inserter(pixelsOfFrameGridCell));
     return pixelsOfFrameGridCell;
+  }
+};
+
+template<bool isContinuous = true, typename PixelT = uint8_t, class IterT = cv::MatConstIterator_<PixelT>>
+class PixelsOfFrameGridCellExtractor
+{
+public:
+
+  std::vector<PixelT> ExtractPixelsOfFrameGridCell(cv::MatConstIterator_<PixelT>& beginFrameGridCell,
+                                                   cv::MatConstIterator_<PixelT>& endFrameGridCell)
+  {
+    return ExtractPixelsOfFrameGridCell_impl<isContinuous, PixelT, IterT>()(beginFrameGridCell, endFrameGridCell);
   }
 };
 
@@ -129,12 +135,16 @@ std::vector<double> CalculateMedianValuesOfPixelsOfFrameGridCells::CalculateMedi
     // Determine method of pixel extraction - array-wise or by iteration.
     if (grayscaleVersionOfFrameGridCell.isContinuous()) {
       // Array-wise copy.
-      pixelsOfFrameGridCell = std::vector<uint8_t>(beginFrameGridCell, endFrameGridCell);
+      const bool whetherPixelsContinuous = true;
+      PixelsOfFrameGridCellExtractor<whetherPixelsContinuous> pixelsOfFrameGridCellExtractor;
+      pixelsOfFrameGridCell = pixelsOfFrameGridCellExtractor.ExtractPixelsOfFrameGridCell(beginFrameGridCell, endFrameGridCell);
     }
     else {
       // Copy by iteration.
       pixelsOfFrameGridCell.clear();
-      std::copy(beginFrameGridCell, endFrameGridCell, std::back_inserter(pixelsOfFrameGridCell));
+      const bool whetherPixelsContinuous = false;
+      PixelsOfFrameGridCellExtractor<whetherPixelsContinuous> pixelsOfFrameGridCellExtractor;
+      pixelsOfFrameGridCell = pixelsOfFrameGridCellExtractor.ExtractPixelsOfFrameGridCell(beginFrameGridCell, endFrameGridCell);
     }
 
     medianValuesOfPixelsOfEachGridCell.push_back(Median(pixelsOfFrameGridCell));
